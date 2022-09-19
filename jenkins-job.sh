@@ -26,14 +26,10 @@ echo ""
 # Stuff
 # Goes
 # Here
-if [[ -z "${QUAY_IMAGE}" ]]; then
-	echo "-- Scanning Quay.io Image --"
-	echo $QUAY_IMAGE
-	echo ""
-	syft $QUAY_IMAGE
-else
-	echo "No QUAY_IMAGE environment variable defined."
-fi
+echo "-- Scanning Quay.io Image --"
+echo $QUAY_IMAGE
+echo ""
+syft $QUAY_IMAGE
 echo ""
 
 echo ""
