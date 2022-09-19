@@ -1,0 +1,18 @@
+{
+    "components": [
+    {
+    "apicast-test-services": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/apicast-test-services-prod/deployments/apicast-test-services",
+    "entitlements-api-go": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/entitlements-prod/deployments/entitlements-api-go",
+    "gateway": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/3scale-prod/deployments/apicast",
+    "platform-logger": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/platform-logging-prod/deployments/platform-logger",
+    "platform-logstash": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/platform-logging-prod/deployments/platform-logstash",
+    "rbac": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/rbac-prod/deployments/rbac-service",
+    "uhc-auth-proxy": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/uhc-auth-proxy-prod/deployments/uhc-auth-proxy",
+    "backoffice-proxy": "",
+    "turnpike-web": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/turnpike-prod/deployments/web",
+    "turnpike-nginx": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/turnpike-prod/deployments/nginx",
+    "turnpike-prometheus": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/turnpike-prod/deployments/prometheus-nginx",
+    "haberdasher": ""
+    }
+]
+}
