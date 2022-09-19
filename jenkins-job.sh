@@ -4,6 +4,17 @@ echo "Running The Late Syft Jenkins Job"
 echo "================================="
 echo ""
 
+# Metadata ----------------------------------------------------------
+# If things hit the fan we'd like to know some build time information
+echo "-- RedHat Release --"
+cat /etc/redhat-release
+echo "-- Python Version --"
+python --version
+echo ""
+echo "-- Golang Version --"
+go version
+
+# Main Logic ---------------------------------------------------------
 # Stuff
 # Goes
 # Here
