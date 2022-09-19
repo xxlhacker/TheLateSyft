@@ -5,7 +5,6 @@ import json
 import os
 import sys
 import logging
-from pprint import pprint as ppp
 
 
 def osd_api_key_check():
@@ -76,7 +75,7 @@ def get_tasks(session, urls):
 
 def osd_data_parser(osd_results):
     """
-    Parses through returns OSD data and build and dedups a list of Quay Image Tag to be used by Syft.
+    Parses through returns OSD data and build dictionary of Pod Names and Quay Image Tag to be used by Syft.
     """
     quay_urls = {}
     for components in osd_results:
@@ -99,7 +98,7 @@ async def main():
     worksteam_json_data = define_component_list()
     osd_results = await production_image_lookup(worksteam_json_data)
     quay_urls = osd_data_parser(osd_results)
-    ppp(quay_urls, sort_dicts=False)
+    print(quay_urls)
 
 
 if __name__ == "__main__":
