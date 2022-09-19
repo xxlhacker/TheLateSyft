@@ -14,6 +14,9 @@ python --version
 echo ""
 echo "-- Golang Version --"
 go version
+echo ""
+echo "-- Syft Version --"
+syft --version
 
 # Main Logic ---------------------------------------------------------
 # Stuff
