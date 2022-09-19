@@ -17,6 +17,10 @@ go version
 echo ""
 echo "-- Syft Version --"
 syft --version
+echo ""
+echo "-- Environment --"
+env
+echo ""
 
 # Main Logic ---------------------------------------------------------
 # Stuff
