@@ -8,6 +8,7 @@ echo ""
 # If things hit the fan we'd like to know some build time information
 echo "-- RedHat Release --"
 cat /etc/redhat-release
+echo ""
 echo "-- Python Version --"
 python --version
 echo ""
