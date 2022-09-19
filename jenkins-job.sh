@@ -27,9 +27,9 @@ echo ""
 # Goes
 # Here
 echo "-- Scanning Quay.io Image --"
-echo $QUAY_IMAGE
+echo $QUAY_IMAGE:$QUAY_TAG
 echo ""
-syft $QUAY_IMAGE
+syft $QUAY_IMAGE:$QUAY_TAG
 echo ""
 
 echo ""
