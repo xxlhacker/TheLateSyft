@@ -3,6 +3,7 @@ echo "================================="
 echo "Running The Late Syft Jenkins Job"
 echo "================================="
 echo ""
+latesyftlogo.sh
 
 # Metadata ----------------------------------------------------------
 # If things hit the fan we'd like to know some build time information
