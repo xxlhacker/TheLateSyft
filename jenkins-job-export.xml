@@ -43,17 +43,8 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>echo &quot;-- Cloning Git Repository --&quot;
-git clone git@github.com:xxlhacker/TheLateSyft.git
-cd TheLateSyft;
-echo &quot;&quot;
-
-echo &quot;-- Logging into Quay.io --&quot;
-docker login -u $QUAY_USER -p $QUAY_TOKEN quay.io
-echo &quot;&quot;
-
-echo &quot;-- Running jenkins-job.sh --&quot;
-./jenkins-job.sh
+      <command>echo &quot;-- Running jenkins-job.sh --&quot;
+./TheLateSyft/jenkins-job.sh
 </command>
       <configuredLocalRules/>
     </hudson.tasks.Shell>
