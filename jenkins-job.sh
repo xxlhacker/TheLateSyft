@@ -37,9 +37,7 @@ mkdir $RESULTS_DIR
 
 # Determine output template format
 if [ $SYFT_OUTPUT_FORMAT = "template" ]; then
-    SYFT_OUTPUT_TEMPLATE_FILE=$WORKSPACE"/syft_results/syft-output-template.tmpl"
-    SYFT_OUTPUT_TEMPLATE_FILE_FLAG="-t "$SYFT_OUTPUT_TEMPLATE_FILE
-    echo $SYFT_OUTPUT_TEMPLATE > $SYFT_OUTPUT_TEMPLATE_FILE
+    SYFT_OUTPUT_TEMPLATE_FILE_FLAG="-t templates/"$SYFT_OUTPUT_TEMPLATE_FILE
 else
     SYFT_OUTPUT_TEMPLATE_FILE_FLAG=""
 fi
