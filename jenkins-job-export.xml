@@ -1,0 +1,83 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Run The Late Syft Job</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.35.0">
+      <projectUrl>https://github.com/xxlhacker/TheLateSyft/</projectUrl>
+      <displayName></displayName>
+    </com.coravy.hudson.plugins.github.GithubProjectProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>QUAY_IMAGE</name>
+          <description>Choose the Quay.io image to scan</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>quay.io/cloudservices/advisor-backend</string>
+              <string>quay.io/cloudservices/insights-inventory</string>
+              <string>quay.io/cloudservices/insights-puptoo</string>
+              <string>quay.io/cloudservices/remediations</string>
+              <string>quay.io/cloudservices/remediations-consumer</string>
+              <string>quay.io/cloudservices/insights-ingress</string>
+              <string>quay.io/cloudservices/payload-tracker-go</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>QUAY_TAG</name>
+          <description>Enter image tag/ref e.g. &quot;latest&quot; or &lt;hash&gt;</description>
+          <defaultValue>latest</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>echo &quot;-- Cloning Git Repository --&quot;
+git clone git@github.com:xxlhacker/TheLateSyft.git
+cd TheLateSyft;
+echo &quot;&quot;
+
+echo &quot;-- Logging into Quay.io --&quot;
+docker login -u $QUAY_USER -p $QUAY_TOKEN quay.io
+echo &quot;&quot;
+
+echo &quot;-- Running jenkins-job.sh --&quot;
+./jenkins-job.sh
+</command>
+      <configuredLocalRules/>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <hudson.plugins.ws__cleanup.PreBuildCleanup plugin="ws-cleanup@0.43">
+      <deleteDirs>false</deleteDirs>
+      <cleanupParameter></cleanupParameter>
+      <externalDelete></externalDelete>
+      <disableDeferredWipeout>false</disableDeferredWipeout>
+    </hudson.plugins.ws__cleanup.PreBuildCleanup>
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@523.vd859a_4b_122e6">
+      <bindings>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>QUAY_USERNAME</credentialsId>
+          <variable>QUAY_USER</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>QUAY_TOKEN</credentialsId>
+          <variable>QUAY_TOKEN</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+      </bindings>
+    </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@1.20"/>
+  </buildWrappers>
+</project>
