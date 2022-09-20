@@ -3,7 +3,7 @@ echo "================================="
 echo "Running The Late Syft Jenkins Job"
 echo "================================="
 echo ""
-latesyftlogo.sh
+./latesyftlogo.sh
 
 # Metadata ----------------------------------------------------------
 # If things hit the fan we'd like to know some build time information
@@ -53,6 +53,4 @@ syft $QUAY_IMAGE:$QUAY_TAG -o $SYFT_OUTPUT_FORMAT=$SYFT_OUTPUT_FILE $SYFT_OUTPUT
 echo ""
 
 echo ""
-echo "====="
-echo "DONE."
-echo "====="
+./fin.sh
