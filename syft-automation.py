@@ -5,6 +5,7 @@ import json
 import os
 import sys
 import logging
+import subprocess
 
 
 def osd_api_key_check():
@@ -19,6 +20,7 @@ def osd_api_key_check():
             logging.info("OSD Prod Authentication Successful!")
         else:
             logging.error('OSD Prod Authentication was unsuccessful, please varify your "OSD API KEY" is vaild.')
+            quit()
     else:
         logging.error('Job Failed to start. You must supply an "OSD_API_KEY" as environment variable.')
         quit()
@@ -75,21 +77,55 @@ def get_tasks(session, urls):
 
 def osd_data_parser(osd_results):
     """
-    Parses through returns OSD data and build dictionary of Pod Names and Quay Image Tag to be used by Syft.
+    Parses through returns OSD data and builds a dictionary of Pod Names and Quay Image Tag to be used by Syft.
     """
-    quay_urls = {}
+    deployment_data = {}
     for components in osd_results:
         if components["kind"] == "Deployment":
             for component in components["spec"]["template"]["spec"]["containers"]:
-                quay_urls[component["name"]] = component["image"]
+                deployment_data[component["name"]] = component["image"]
         elif components["kind"] == "CronJob":
-            quay_urls[component["name"]] = components["spec"]["jobTemplate"]["spec"]["template"]["spec"]["containers"][
-                0
-            ]["image"]
-    return quay_urls
+            deployment_data[component["name"]] = components["spec"]["jobTemplate"]["spec"]["template"]["spec"][
+                "containers"
+            ][0]["image"]
+    return deployment_data
+
+
+def deployment_data_to_syft(deployment_data, file_name):
+    with open(file_name, "w") as file:
+        file.write('"DEPLOYMENT NAME","QUAY TAG","PACKAGE NAME","VERSION INSTALLED","DEPENDENCY TYPE"')
+    for deployment in deployment_data:
+        deployment_name = deployment
+        quay_url = deployment_data.get(deployment)
+        logging.info(f"Syfting through '{quay_url}'")
+        command = f"syft {quay_url} -o template -t csv.tmpl"
+        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+        output, _ = process.communicate()
+        with open(file_name, "ab") as file:
+            file.write(output)
+        add_osd_metadata(deployment_name, quay_url, file_name)
+
+
+def add_osd_metadata(deployment_name, quay_url, file_name):
+    with open(file_name, "r") as file:
+        filedata = file.read()
+    filedata = filedata.replace("DEPLOYMENT_NAME_PLACEHOLDER", deployment_name)
+    filedata = filedata.replace("QUAY_TAG_PLACEHOLDER", quay_url)
+    with open(file_name, "w") as file:
+        file.write(filedata)
+
+
+def remove_blank_lines(file_name):
+    with open(file_name, "r") as file:
+        filedata = file.readlines()
+    with open(file_name, "w") as file:
+        for line in filedata:
+            if line != "\n":
+                file.write(line)
 
 
 async def main():
+    file_name = "sbom.csv"
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(message)s", datefmt="%d-%b-%y %H:%M:%S", level=logging.INFO
     )
@@ -97,8 +133,9 @@ async def main():
     workstream_json_check()
     worksteam_json_data = define_component_list()
     osd_results = await production_image_lookup(worksteam_json_data)
-    quay_urls = osd_data_parser(osd_results)
-    print(quay_urls)
+    deployment_data = osd_data_parser(osd_results)
+    deployment_data_to_syft(deployment_data, file_name)
+    remove_blank_lines(file_name)
 
 
 if __name__ == "__main__":
