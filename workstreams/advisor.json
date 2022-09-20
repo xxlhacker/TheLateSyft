@@ -1,0 +1,9 @@
+{
+    "components": [
+        {
+            "advisor-backend-api": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/advisor-prod/deployments/advisor-backend-api",
+            "advisor-backend-service": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/advisor-prod/deployments/advisor-backend-service",
+            "advisor-backend-tasks-service": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/advisor-prod/deployments/advisor-backend-tasks-service"
+        }
+    ]
+}
