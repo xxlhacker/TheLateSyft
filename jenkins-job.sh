@@ -4,16 +4,6 @@ echo "Running The Late Syft Jenkins Job"
 echo "================================="
 echo ""
 
-# Setup Project Environment
-echo "-- Cloning Git Repository --"
-git clone git@github.com:xxlhacker/TheLateSyft.git
-echo ""
-
-# Log into quay.io so we can pull images
-echo "-- Logging into Quay.io --"
-docker login -u $QUAY_USER -p $QUAY_TOKEN quay.io
-echo ""
-
 # Metadata ----------------------------------------------------------
 # If things hit the fan we'd like to know some build time information
 echo "-- RedHat Release --"
