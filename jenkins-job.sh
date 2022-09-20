@@ -30,8 +30,11 @@ echo "-- Scanning Quay.io Image --"
 echo $QUAY_IMAGE:$QUAY_TAG
 echo ""
 if [ $SYFT_OUTPUT_FORMAT = "template" ]; then
-    SYFT_OUTPUT_TEMPLATE_FILE="syft-output-template.tmpl"
+    SYFT_OUTPUT_TEMPLATE_FILE=$WORKSPACE"/syft_results/syft-output-template.tmpl"
+    SYFT_OUTPUT_TEMPLATE_FILE_FLAG="-t "$SYFT_OUTPUT_TEMPLATE_FILE
     echo $SYFT_OUTPUT_TEMPLATE > $SYFT_OUTPUT_TEMPLATE_FILE
+else
+    SYFT_OUTPUT_TEMPLATE_FILE_FLAG=""
 fi
 
 # Make the artifacts results directory
@@ -45,7 +48,7 @@ SYFT_OUTPUT_FILE=$RESULTS_DIR"/"$FORMATTED_QUAY_IMAGE"."$SYFT_OUTPUT_FORMAT
 
 # Perform Syft Analysis
 echo "Writing Syft results to file "$SYFT_OUTPUT_FILE"..."
-syft $QUAY_IMAGE:$QUAY_TAG -o $SYFT_OUTPUT_FORMAT=$SYFT_OUTPUT_FILE $SYFT_OUTPUT_TEMPLATE_FILE
+syft $QUAY_IMAGE:$QUAY_TAG -o $SYFT_OUTPUT_FORMAT=$SYFT_OUTPUT_FILE $SYFT_OUTPUT_TEMPLATE_FILE_FLAG
 echo ""
 
 echo ""
