@@ -41,7 +41,7 @@ mkdir $RESULTS_DIR
 
 # Sanitize any bad strings for artifact filenames
 FORMATTED_QUAY_IMAGE=$(echo $QUAY_IMAGE | sed -e 's/[^A-Za-z0-9._-]/_/g')
-SYFT_OUTPUT_FILE=$RESULTS_DIR"/"$FORMATTED_QUAY_IMAGE"."$OUTPUT_FORMAT
+SYFT_OUTPUT_FILE=$RESULTS_DIR"/"$FORMATTED_QUAY_IMAGE"."$SYFT_OUTPUT_FORMAT
 
 # Perform Syft Analysis
 echo "Writing Syft results to file "$SYFT_OUTPUT_FILE"..."
