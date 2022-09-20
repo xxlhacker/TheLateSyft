@@ -29,6 +29,13 @@ echo ""
 echo "-- Scanning Quay.io Image --"
 echo $QUAY_IMAGE:$QUAY_TAG
 echo ""
+
+# Make the artifacts results directory
+RESULTS_DIR=$WORKSPACE"/syft_results"
+echo "Making artifacts results directory "$RESULTS_DIR"..."
+mkdir $RESULTS_DIR
+
+# Determine output template format
 if [ $SYFT_OUTPUT_FORMAT = "template" ]; then
     SYFT_OUTPUT_TEMPLATE_FILE=$WORKSPACE"/syft_results/syft-output-template.tmpl"
     SYFT_OUTPUT_TEMPLATE_FILE_FLAG="-t "$SYFT_OUTPUT_TEMPLATE_FILE
@@ -36,11 +43,6 @@ if [ $SYFT_OUTPUT_FORMAT = "template" ]; then
 else
     SYFT_OUTPUT_TEMPLATE_FILE_FLAG=""
 fi
-
-# Make the artifacts results directory
-RESULTS_DIR=$WORKSPACE"/syft_results"
-echo "Making artifacts results directory "$RESULTS_DIR"..."
-mkdir $RESULTS_DIR
 
 # Sanitize any bad strings for artifact filenames
 FORMATTED_QUAY_IMAGE=$(echo $QUAY_IMAGE | sed -e 's/[^A-Za-z0-9._-]/_/g')
