@@ -29,7 +29,12 @@ echo ""
 echo "-- Scanning Quay.io Image --"
 echo $QUAY_IMAGE:$QUAY_TAG
 echo ""
-syft $QUAY_IMAGE:$QUAY_TAG
+if [ $SYFT_OUTPUT_FORMAT = "template" ]; then
+    SYFT_OUTPUT_TEMPLATE_FILE="syft-output-template.tmpl"
+    echo $SYFT_OUTPUT_TEMPLATE > $SYFT_OUTPUT_TEMPLATE_FILE
+fi
+mkdir $WORKSPACE/syft_results
+syft $QUAY_IMAGE:$QUAY_TAG -o $SYFT_OUTPUT_FORMAT=$WORKSPACE/syft_results/$QUAY_IMAGE.$OUTPUT_FORMAT $SYFT_OUTPUT_TEMPLATE_FILE
 echo ""
 
 echo ""
