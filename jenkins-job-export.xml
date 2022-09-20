@@ -31,6 +31,28 @@
           <defaultValue>latest</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>SYFT_OUTPUT_FORMAT</name>
+          <description>Choose the Syft Output Format. See https://github.com/anchore/syft/#output-formats. If you choose template, enter the template below. Output will be saved as build artifacts.</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>json</string>
+              <string>text</string>
+              <string>cyclonedx-xml</string>
+              <string>cyclonedx-json</string>
+              <string>spdx-tag-value</string>
+              <string>github</string>
+              <string>table</string>
+              <string>template</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>SYFT_OUTPUT_TEMPLATE_FILE</name>
+          <description>The template of choice to be used located in the templates directory within TheLateSyft project. Not used if the above format is not template.</description>
+          <defaultValue>default.tmpl</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>
@@ -46,19 +68,28 @@
       <command>echo &quot;-- Cloning Git Repository --&quot;
 git clone git@github.com:xxlhacker/TheLateSyft.git
 cd TheLateSyft;
-echo &quot;&quot;
+echo &quot;&quot;;
 
-echo &quot;-- Logging into Quay.io --&quot;
+echo &quot;-- Logging into Quay.io --&quot;;
 docker login -u $QUAY_USER -p $QUAY_TOKEN quay.io
-echo &quot;&quot;
+echo &quot;&quot;;
 
 echo &quot;-- Running jenkins-job.sh --&quot;
-./jenkins-job.sh
-</command>
+./jenkins-job.sh</command>
       <configuredLocalRules/>
     </hudson.tasks.Shell>
   </builders>
-  <publishers/>
+  <publishers>
+    <hudson.tasks.ArtifactArchiver>
+      <artifacts>syft_results/*</artifacts>
+      <allowEmptyArchive>false</allowEmptyArchive>
+      <onlyIfSuccessful>false</onlyIfSuccessful>
+      <fingerprint>false</fingerprint>
+      <defaultExcludes>true</defaultExcludes>
+      <caseSensitive>true</caseSensitive>
+      <followSymlinks>false</followSymlinks>
+    </hudson.tasks.ArtifactArchiver>
+  </publishers>
   <buildWrappers>
     <hudson.plugins.ws__cleanup.PreBuildCleanup plugin="ws-cleanup@0.43">
       <deleteDirs>false</deleteDirs>
