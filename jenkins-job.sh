@@ -26,7 +26,7 @@ echo $OUTPUT_FORMAT" "$OUTPUT_TEMPLATE
 echo ""
 
 # Make the artifacts results directory
-RESULTS_DIR=$WORKSPACE"/syft_results"
+RESULTS_DIR=$WORKSPACE"/TheLateSyft/syft_results"
 echo "Making artifacts results directory "$RESULTS_DIR
 mkdir $RESULTS_DIR
 
