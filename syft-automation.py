@@ -1,3 +1,10 @@
+"""
+PLEASE NOTE:
+This python script is meant to be run by its parent script, "jenkins-job.sh". If you plan on 
+running this python script independently, you will need to create the "/syft_results" 
+directory if it does not already exist.
+"""
+
 import asyncio
 import aiohttp
 import requests
@@ -57,9 +64,7 @@ async def production_image_lookup(worksteam_json_data):
     osd_results = []
     urls = []
     for component in worksteam_json_data["components"]:
-        for url in component.values():
-            if url != "":
-                urls.append(url)
+        urls.extend(url for url in component.values() if url != "")
     async with aiohttp.ClientSession(headers={"Authorization": f'Bearer {os.environ["OSD_API_KEY"]}'}) as session:
         tasks = get_tasks(session, urls)
         responses = await asyncio.gather(*tasks)
@@ -91,22 +96,39 @@ def osd_data_parser(osd_results):
     return deployment_data
 
 
-def deployment_data_to_syft(deployment_data, file_name):
+def syft_automation(deployment_data, file_name):
+    """
+    Uses the deployment data collected from OSD and uses Syft to scan the identified images.
+    Additionally, if any deployment uses a previously scanned image, it will use the cached
+    results instead of rescanning.
+    """
+    syft_output_cache = {}
     with open(file_name, "w") as file:
         file.write('"DEPLOYMENT NAME","QUAY TAG","PACKAGE NAME","VERSION INSTALLED","DEPENDENCY TYPE"')
     for deployment in deployment_data:
         deployment_name = deployment
         quay_url = deployment_data.get(deployment)
-        logging.info(f"Syfting through '{quay_url}'")
-        command = f"syft {quay_url} -o template -t csv.tmpl"
-        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
-        output, _ = process.communicate()
-        with open(file_name, "ab") as file:
-            file.write(output)
-        add_osd_metadata(deployment_name, quay_url, file_name)
+        if quay_url in syft_output_cache:
+            logging.info(f"{deployment.upper()} uses a previously scanned image, using cached results.")
+            with open(file_name, "ab") as file:
+                file.write(syft_output_cache[quay_url])
+                add_osd_metadata(deployment_name, quay_url, file_name)
+        else:
+            logging.info(f"Syfting through '{quay_url}'")
+            command = f"syft {quay_url} -o template -t templates/csv.tmpl"
+            process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+            output, _ = process.communicate()
+            syft_output_cache[quay_url] = output
+            with open(file_name, "ab") as file:
+                file.write(output)
+            add_osd_metadata(deployment_name, quay_url, file_name)
 
 
 def add_osd_metadata(deployment_name, quay_url, file_name):
+    """
+    Looks at the output CSV and replaces the "PLACEHOLDER" text with the associated
+    OSD metadata.
+    """
     with open(file_name, "r") as file:
         filedata = file.read()
     filedata = filedata.replace("DEPLOYMENT_NAME_PLACEHOLDER", deployment_name)
@@ -116,6 +138,9 @@ def add_osd_metadata(deployment_name, quay_url, file_name):
 
 
 def remove_blank_lines(file_name):
+    """
+    Looks at the output CSV and removes blank lines intoduced via Syft Output.
+    """
     with open(file_name, "r") as file:
         filedata = file.readlines()
     with open(file_name, "w") as file:
@@ -125,7 +150,7 @@ def remove_blank_lines(file_name):
 
 
 async def main():
-    file_name = "sbom.csv"
+    file_name = f"syft_results/{sys.argv[1]}-sbom.csv"
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(message)s", datefmt="%d-%b-%y %H:%M:%S", level=logging.INFO
     )
@@ -134,7 +159,7 @@ async def main():
     worksteam_json_data = define_component_list()
     osd_results = await production_image_lookup(worksteam_json_data)
     deployment_data = osd_data_parser(osd_results)
-    deployment_data_to_syft(deployment_data, file_name)
+    syft_automation(deployment_data, file_name)
     remove_blank_lines(file_name)
 
 
