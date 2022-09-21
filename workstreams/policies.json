@@ -1,0 +1,8 @@
+{
+    "components": [
+        {
+            "policies-engine": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/policies-prod/deployments/policies-engine-service",
+            "policies-ui-backend": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/policies-prod/deployments/policies-ui-backend-service"
+        }
+    ]
+}
