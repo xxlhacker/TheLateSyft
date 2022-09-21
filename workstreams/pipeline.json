@@ -1,0 +1,14 @@
+{
+    "components": [
+        {
+            "insights-ingress": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/ingress-prod/deployments/ingress-service",
+            "insights-storage-broker": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/ingress-prod/deployments/storage-broker-processor",
+            "recepetor-gateway": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/receptor-prod/deployments/receptor-gateway",
+            "playbook-dispatcher-api": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/playbook-dispatcher-prod/deployments/playbook-dispatcher-api",
+            "plabook-dispatcher-connect-connect": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/playbook-dispatcher-prod/deployments/playbook-dispatcher-connect-connect",
+            "playbook-dispatcher-event-consumer": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/playbook-dispatcher-prod/deployments/playbook-dispatcher-event-consumer",
+            "playbook-dispatcher-response-consumer": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/playbook-dispatcher-prod/deployments/playbook-dispatcher-response-consumer",
+            "playbook-dispatcher-validator": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/playbook-dispatcher-prod/deployments/playbook-dispatcher-validator"
+        }
+    ]
+}
