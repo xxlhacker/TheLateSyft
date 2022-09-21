@@ -93,6 +93,11 @@ def osd_data_parser(osd_results):
             deployment_data[component["name"]] = components["spec"]["jobTemplate"]["spec"]["template"]["spec"][
                 "containers"
             ][0]["image"]
+        elif components["kind"] == "Status" and components["reason"] == "NotFound":
+            logging.error(
+                f'Deployment {components["details"]["name"].upper()} was not found in OSD. '
+                "Please check the associated workstream template and verify all OSD URLs are correct."
+            )
     return deployment_data
 
 
@@ -150,12 +155,12 @@ def remove_blank_lines(file_name):
 
 
 async def main():
-    file_name = f"syft_results/{sys.argv[1]}-sbom.csv"
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(message)s", datefmt="%d-%b-%y %H:%M:%S", level=logging.INFO
     )
     osd_api_key_check()
     workstream_json_check()
+    file_name = f"syft_results/{sys.argv[1]}-sbom.csv"
     worksteam_json_data = define_component_list()
     osd_results = await production_image_lookup(worksteam_json_data)
     deployment_data = osd_data_parser(osd_results)
