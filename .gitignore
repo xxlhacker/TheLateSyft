@@ -1,2 +1,3 @@
 .dccache
 sbom.csv
+/syft_results
