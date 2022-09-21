@@ -32,10 +32,9 @@ mkdir $RESULTS_DIR
 
 # Run Python Syft script
 echo "Setting up Python environment..."
-pipenv shell
 pipenv install
 echo "Running syft-automation.py..."
-python syft-automation.py $WORKSTREAM
+pipenv run python syft-automation.py $WORKSTREAM
 
 echo ""
 ./fin.sh
