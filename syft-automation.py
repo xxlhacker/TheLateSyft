@@ -99,37 +99,44 @@ def osd_data_parser(osd_results):
     return deployment_data
 
 
-def syft_automation(deployment_data, file_name):
+def syft_automation(deployment_data, csv_file_name, json_file_name):
     """
     Uses the deployment data collected from OSD and uses Syft to scan the identified images.
     Additionally, if any deployment uses a previously scanned image, it will use the cached
     results instead of rescanning.
     """
     syft_output_cache = {}
-    with open(file_name, "w") as file:
+    with open(csv_file_name, "w") as file:
         file.write('"DEPLOYMENT NAME","QUAY TAG","PACKAGE NAME","VERSION INSTALLED","DEPENDENCY TYPE"')
     for deployment in deployment_data:
         deployment_name = deployment
         quay_url = deployment_data.get(deployment)
         if quay_url in syft_output_cache:
             logging.info(f"{deployment.upper()} uses a previously scanned image, using cached results.")
-            with open(file_name, "ab") as file:
-                file.write(syft_output_cache[quay_url])
-                add_osd_metadata(deployment_name, quay_url, file_name)
+            with open(csv_file_name, "ab") as file:
+                file.write(syft_output_cache[quay_url]["csv"])
+            add_osd_metadata(deployment_name, quay_url, csv_file_name)
+            with open(json_file_name, "ab") as file:
+                file.write(syft_output_cache[quay_url]["json"])
         else:
             logging.info(f"Syfting through '{quay_url}'")
-            command = f"syft {quay_url} -o template -t {config.TEMPLATES_DIR}/csv.tmpl"
+            command = f"syft {quay_url} -o template -t {config.TEMPLATES_DIR}/csv_and_json.tmpl"
             process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
             output, _ = process.communicate()
-            syft_output_cache[quay_url] = output
-            with open(file_name, "ab") as file:
-                file.write(output)
-            add_osd_metadata(deployment_name, quay_url, file_name)
+            csv_output = output.split(b"===SYFT_TEMPLATE_SEPARATOR===")[0]
+            json_output = output.split(b"===SYFT_TEMPLATE_SEPARATOR===")[1]
+            syft_output_cache[quay_url] = {"csv": csv_output, "json": json_output}
+            with open(csv_file_name, "ab") as file:
+                file.write(csv_output)
+            add_osd_metadata(deployment_name, quay_url, csv_file_name)
+            with open(json_file_name, "ab") as file:
+                file.write(json_output)
+        add_osd_metadata(deployment_name, quay_url, json_file_name)
 
 
 def add_osd_metadata(deployment_name, quay_url, file_name):
     """
-    Looks at the output CSV and replaces the "PLACEHOLDER" text with the associated
+    Looks at the provided output and replaces the "PLACEHOLDER" text with the associated
     OSD metadata.
     """
     with open(file_name, "r") as file:
@@ -142,7 +149,7 @@ def add_osd_metadata(deployment_name, quay_url, file_name):
 
 def remove_blank_lines(file_name):
     """
-    Looks at the output CSV and removes blank lines intoduced via Syft Output.
+    Looks at the provided output and removes blank lines intoduced via Syft Output.
     """
     with open(file_name, "r") as file:
         filedata = file.readlines()
@@ -158,13 +165,15 @@ async def main():
     )
     osd_api_key_check()
     workstream_json_check()
-    file_name = f"{config.SYFT_RESULTS_DIR}/{sys.argv[1]}-sbom.csv"
+    csv_file_name = f"{config.SYFT_RESULTS_DIR}/{sys.argv[1]}-sbom.csv"
+    json_file_name = f"{config.SYFT_RESULTS_DIR}/{sys.argv[1]}-sbom.json"
     worksteam_json_data = define_component_list()
     make_results_dir()
     osd_results = await production_image_lookup(worksteam_json_data)
     deployment_data = osd_data_parser(osd_results)
-    syft_automation(deployment_data, file_name)
-    remove_blank_lines(file_name)
+    syft_automation(deployment_data, csv_file_name, json_file_name)
+    remove_blank_lines(csv_file_name)
+    remove_blank_lines(json_file_name)
 
 
 if __name__ == "__main__":
