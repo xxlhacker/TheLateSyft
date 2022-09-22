@@ -1,3 +1,4 @@
 .dccache
 sbom.csv
 /syft_results
+lint-results.txt
