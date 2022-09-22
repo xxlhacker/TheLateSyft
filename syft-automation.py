@@ -1,10 +1,3 @@
-"""
-PLEASE NOTE:
-This python script is meant to be run by its parent script, "jenkins-job.sh". If you plan on 
-running this python script independently, you will need to create the "/syft_results" 
-directory if it does not already exist.
-"""
-
 import asyncio
 import aiohttp
 import requests
@@ -13,16 +6,21 @@ import os
 import sys
 import logging
 import subprocess
+import config
+
+
+def make_results_dir():
+    if not os.path.isdir(config.SYFT_RESULTS_DIR):
+        os.makedirs(config.SYFT_RESULTS_DIR)
 
 
 def osd_api_key_check():
     """
     Checks and vaildates OSD API Key that is supplied as an environment variable.
     """
-    if "OSD_API_KEY" in os.environ:
-        url = "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/"
-        headers = {"Authorization": f"Bearer {os.environ['OSD_API_KEY']}"}
-        r = requests.get(url, headers=headers)
+    if config.OSD_API_KEY:
+        headers = {"Authorization": f"Bearer {config.OSD_API_KEY}"}
+        r = requests.get(config.PROD_OSD_API_URL, headers=headers)
         if r.status_code == 200:
             logging.info("OSD Prod Authentication Successful!")
         else:
@@ -38,7 +36,7 @@ def workstream_json_check():
     Checks and validates the existance of the workstream json name supplied via command line argument.
     """
     if len(sys.argv) > 1:
-        if os.path.exists(f"workstreams/{sys.argv[1]}.json"):
+        if os.path.exists(f"{config.WORKSTREAMS_DIR}/{sys.argv[1]}.json"):
             logging.info("Workstream JSON Found!")
         else:
             logging.error("Unable to find Workstream JSON.")
@@ -52,7 +50,7 @@ def define_component_list():
     """
     Opens and reads the OSD urls for each component with the supplied workstream JSON.
     """
-    json_path = os.path.join(os.getcwd(), f"workstreams/{sys.argv[1]}.json")
+    json_path = os.path.join(os.getcwd(), f"{config.WORKSTREAMS_DIR}/{sys.argv[1]}.json")
     with open(json_path, "r") as json_file:
         return json.loads(json_file.read())
 
@@ -65,7 +63,7 @@ async def production_image_lookup(worksteam_json_data):
     urls = []
     for component in worksteam_json_data["components"]:
         urls.extend(url for url in component.values() if url != "")
-    async with aiohttp.ClientSession(headers={"Authorization": f'Bearer {os.environ["OSD_API_KEY"]}'}) as session:
+    async with aiohttp.ClientSession(headers={"Authorization": f"Bearer {config.OSD_API_KEY}"}) as session:
         tasks = get_tasks(session, urls)
         responses = await asyncio.gather(*tasks)
         for response in responses:
@@ -120,7 +118,7 @@ def syft_automation(deployment_data, file_name):
                 add_osd_metadata(deployment_name, quay_url, file_name)
         else:
             logging.info(f"Syfting through '{quay_url}'")
-            command = f"syft {quay_url} -o template -t templates/csv.tmpl"
+            command = f"syft {quay_url} -o template -t {config.TEMPLATES_DIR}/csv.tmpl"
             process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
             output, _ = process.communicate()
             syft_output_cache[quay_url] = output
@@ -160,8 +158,9 @@ async def main():
     )
     osd_api_key_check()
     workstream_json_check()
-    file_name = f"syft_results/{sys.argv[1]}-sbom.csv"
+    file_name = f"{config.SYFT_RESULTS_DIR}/{sys.argv[1]}-sbom.csv"
     worksteam_json_data = define_component_list()
+    make_results_dir()
     osd_results = await production_image_lookup(worksteam_json_data)
     deployment_data = osd_data_parser(osd_results)
     syft_automation(deployment_data, file_name)
