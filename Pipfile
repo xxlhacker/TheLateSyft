@@ -8,8 +8,12 @@ black = "*"
 certifi = "*"
 aiohttp = "*"
 requests = "*"
+flake8 = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.9"
+
+[scripts]
+linter = "flake8 . --tee --output-file lint-results.txt"
