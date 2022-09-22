@@ -25,11 +25,6 @@ echo "-- Output Format --"
 echo $OUTPUT_FORMAT" "$OUTPUT_TEMPLATE
 echo ""
 
-# Make the artifacts results directory
-RESULTS_DIR=$WORKSPACE"/TheLateSyft/syft_results"
-echo "Making artifacts results directory "$RESULTS_DIR
-mkdir $RESULTS_DIR
-
 # Run Python Syft script
 echo "Setting up Python environment..."
 pipenv install
