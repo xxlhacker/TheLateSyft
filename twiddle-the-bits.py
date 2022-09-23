@@ -185,6 +185,7 @@ def grype_automation(deployment_data, csv_file_name, json_file_name):
             with open(json_file_name, "ab") as file:
                 file.write(json_output)
         add_osd_metadata(deployment_name, quay_url, json_file_name)
+        image_cleanup(quay_url)
 
 
 def add_osd_metadata(deployment_name, quay_url, file_name):
@@ -223,6 +224,23 @@ def format_json(json_file_name):
         file.write(clean_filedata)
 
 
+def create_clean_result_files(csv_file_name, json_file_name):
+    with open(csv_file_name, "w") as file:
+        file.write("")
+        logging.info(f"Generating clean {csv_file_name}")
+    with open(json_file_name, "w") as file:
+        file.write("")
+        logging.info(f"Generating clean {json_file_name}")
+
+
+def image_cleanup(quay_url):
+    command = f"{config.CONTAINER_ENGINE} image rm -f {quay_url}"
+    process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+    output, _ = process.communicate()
+    if output != b"":
+        logging.info(f'Clean Up: Removing "{quay_url}"')
+
+
 async def main():
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(message)s", datefmt="%d-%b-%y %H:%M:%S", level=logging.INFO
@@ -231,6 +249,7 @@ async def main():
     workstream_json_check()
     csv_file_name = f"{config.SYFT_RESULTS_DIR}/{sys.argv[1]}-sbom.csv"
     json_file_name = f"{config.SYFT_RESULTS_DIR}/{sys.argv[1]}-sbom.json"
+    create_clean_result_files(csv_file_name, json_file_name)
     worksteam_json_data = define_component_list()
     make_results_dir()
     osd_results = await production_image_lookup(worksteam_json_data)
@@ -242,6 +261,7 @@ async def main():
     format_json(json_file_name)
     csv_file_name = f"{config.SYFT_RESULTS_DIR}/{sys.argv[1]}-vuln-scan.csv"
     json_file_name = f"{config.SYFT_RESULTS_DIR}/{sys.argv[1]}-vuln-scan.json"
+    create_clean_result_files(csv_file_name, json_file_name)
     os.system("./art/grype.sh")
     grype_automation(deployment_data, csv_file_name, json_file_name)
     remove_blank_lines(csv_file_name)
