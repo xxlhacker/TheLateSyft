@@ -112,7 +112,7 @@ def clean_json(json_like):
     trailing_array_commas_re = re.compile(
         r'(,)\s*\](?=([^"\\]*(\\.|"([^"\\]*\\.)*[^"\\]*"))*[^"]*$)')
     # Fix objects {} first
-    objects_fixed = trailing_object_commas_re.sub("}", json_like)
+    objects_fixed = trailing_object_commas_re.sub("}", json_like.decode('utf-8'))
     # Now fix arrays/lists [] and return the result
     return trailing_array_commas_re.sub("]", objects_fixed)
 
