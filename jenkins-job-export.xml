@@ -11,48 +11,20 @@
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
         <hudson.model.ChoiceParameterDefinition>
-          <name>QUAY_IMAGE</name>
-          <description>Choose the Quay.io image to scan</description>
+          <name>WORKSTREAM</name>
+          <description>Choose the workstream you&apos;d like to scan. These workstreams must exist in the &quot;workstreams&quot; folder in The Late Syft project.</description>
           <choices class="java.util.Arrays$ArrayList">
             <a class="string-array">
-              <string>quay.io/cloudservices/advisor-backend</string>
-              <string>quay.io/cloudservices/insights-inventory</string>
-              <string>quay.io/cloudservices/insights-puptoo</string>
-              <string>quay.io/cloudservices/remediations</string>
-              <string>quay.io/cloudservices/remediations-consumer</string>
-              <string>quay.io/cloudservices/insights-ingress</string>
-              <string>quay.io/cloudservices/payload-tracker-go</string>
+              <string>advisor</string>
+              <string>devprod</string>
+              <string>infrastructure</string>
+              <string>notifications</string>
+              <string>pipeline</string>
+              <string>policies</string>
+              <string>sources</string>
             </a>
           </choices>
         </hudson.model.ChoiceParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>QUAY_TAG</name>
-          <description>Enter image tag/ref e.g. &quot;latest&quot; or &lt;hash&gt;</description>
-          <defaultValue>latest</defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.ChoiceParameterDefinition>
-          <name>SYFT_OUTPUT_FORMAT</name>
-          <description>Choose the Syft Output Format. See https://github.com/anchore/syft/#output-formats. If you choose template, enter the template below. Output will be saved as build artifacts.</description>
-          <choices class="java.util.Arrays$ArrayList">
-            <a class="string-array">
-              <string>json</string>
-              <string>text</string>
-              <string>cyclonedx-xml</string>
-              <string>cyclonedx-json</string>
-              <string>spdx-tag-value</string>
-              <string>github</string>
-              <string>table</string>
-              <string>template</string>
-            </a>
-          </choices>
-        </hudson.model.ChoiceParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>SYFT_OUTPUT_TEMPLATE_FILE</name>
-          <description>The template of choice to be used located in the templates directory within TheLateSyft project. Not used if the above format is not template.</description>
-          <defaultValue>default.tmpl</defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>
@@ -81,7 +53,7 @@ echo &quot;-- Running jenkins-job.sh --&quot;
   </builders>
   <publishers>
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>syft_results/*</artifacts>
+      <artifacts>TheLateSyft/syft_results/*</artifacts>
       <allowEmptyArchive>false</allowEmptyArchive>
       <onlyIfSuccessful>false</onlyIfSuccessful>
       <fingerprint>false</fingerprint>
@@ -106,6 +78,10 @@ echo &quot;-- Running jenkins-job.sh --&quot;
         <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
           <credentialsId>QUAY_TOKEN</credentialsId>
           <variable>QUAY_TOKEN</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>OSD_API_KEY</credentialsId>
+          <variable>OSD_API_KEY</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
       </bindings>
     </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
