@@ -198,6 +198,7 @@ async def main():
     make_results_dir()
     osd_results = await production_image_lookup(worksteam_json_data)
     deployment_data = osd_data_parser(osd_results)
+    os.system("./art/syft.sh")
     syft_automation(deployment_data, csv_file_name, json_file_name)
     remove_blank_lines(csv_file_name)
     remove_blank_lines(json_file_name)
