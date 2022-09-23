@@ -7,6 +7,7 @@ import sys
 import logging
 import subprocess
 import config
+import re
 
 
 def make_results_dir():
@@ -99,6 +100,23 @@ def osd_data_parser(osd_results):
     return deployment_data
 
 
+def clean_json(json_like):
+    """
+    Removes trailing commas from *json_like* and returns the result.  Example::
+        >>> remove_trailing_commas('{"foo":"bar","baz":["blah",],}')
+        '{"foo":"bar","baz":["blah"]}'
+    https://gist.github.com/liftoff/ee7b81659673eca23cd9fc0d8b8e68b7
+    """
+    trailing_object_commas_re = re.compile(
+        r'(,)\s*}(?=([^"\\]*(\\.|"([^"\\]*\\.)*[^"\\]*"))*[^"]*$)')
+    trailing_array_commas_re = re.compile(
+        r'(,)\s*\](?=([^"\\]*(\\.|"([^"\\]*\\.)*[^"\\]*"))*[^"]*$)')
+    # Fix objects {} first
+    objects_fixed = trailing_object_commas_re.sub("}", json_like)
+    # Now fix arrays/lists [] and return the result
+    return trailing_array_commas_re.sub("]", objects_fixed)
+
+
 def syft_automation(deployment_data, csv_file_name, json_file_name):
     """
     Uses the deployment data collected from OSD and uses Syft to scan the identified images.
@@ -124,7 +142,7 @@ def syft_automation(deployment_data, csv_file_name, json_file_name):
             process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
             output, _ = process.communicate()
             csv_output = output.split(b"===SYFT_TEMPLATE_SEPARATOR===")[0]
-            json_output = output.split(b"===SYFT_TEMPLATE_SEPARATOR===")[1]
+            json_output = clean_json(output.split(b"===SYFT_TEMPLATE_SEPARATOR===")[1])
             syft_output_cache[quay_url] = {"csv": csv_output, "json": json_output}
             with open(csv_file_name, "ab") as file:
                 file.write(csv_output)
