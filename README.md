@@ -23,7 +23,7 @@ the Production OSD Environment.
 
 Then you can run the following command to twiddle the bits:
 NOTE: 
-`OSD_API_KEY` is obtained from the oc login bearer key token for your OSD instance
+`OSD_API_KEY` is obtained from the oc login bearer key token for your OSD instance.
 The workstream you use to twiddle the bits is a file that lives in the Workstreams folder.
 ```
 OSD_API_KEY="sha256~<your-key>" python twiddle-the-bits.py <enter-your-workstream-here>
