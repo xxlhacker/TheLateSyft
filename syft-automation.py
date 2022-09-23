@@ -140,7 +140,6 @@ def syft_automation(deployment_data, csv_file_name, json_file_name):
             process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
             output, _ = process.communicate()
             csv_output = output.split(b"===SYFT_TEMPLATE_SEPARATOR===")[0]
-            # json_output = clean_json(output.split(b"===SYFT_TEMPLATE_SEPARATOR===")[1])
             json_output = output.split(b"===SYFT_TEMPLATE_SEPARATOR===")[1]
             syft_output_cache[quay_url] = {"csv": csv_output, "json": json_output}
             with open(csv_file_name, "ab") as file:
