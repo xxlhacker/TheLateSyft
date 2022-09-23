@@ -1,5 +1,5 @@
 #!/bin/bash
-./latesyftlogo.sh
+./art/latesyftlogo.sh
 
 # Metadata ----------------------------------------------------------
 # If things hit the fan we'd like to know some build time information
@@ -32,4 +32,4 @@ echo "Running syft-automation.py..."
 pipenv run python syft-automation.py $WORKSTREAM
 
 echo ""
-./fin.sh
+./art/fin.sh
