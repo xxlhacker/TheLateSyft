@@ -136,12 +136,49 @@ def syft_automation(deployment_data, csv_file_name, json_file_name):
                 file.write(syft_output_cache[quay_url]["json"])
         else:
             logging.info(f"Syfting through '{quay_url}'")
-            command = f"syft {quay_url} -o template -t {config.TEMPLATES_DIR}/csv_and_json.tmpl"
+            command = f"syft {quay_url} -o template -t {config.TEMPLATES_DIR}/syft_csv_and_json.tmpl"
             process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
             output, _ = process.communicate()
             csv_output = output.split(b"===SYFT_TEMPLATE_SEPARATOR===")[0]
             json_output = output.split(b"===SYFT_TEMPLATE_SEPARATOR===")[1]
             syft_output_cache[quay_url] = {"csv": csv_output, "json": json_output}
+            with open(csv_file_name, "ab") as file:
+                file.write(csv_output)
+            add_osd_metadata(deployment_name, quay_url, csv_file_name)
+            with open(json_file_name, "ab") as file:
+                file.write(json_output)
+        add_osd_metadata(deployment_name, quay_url, json_file_name)
+
+
+def grype_automation(deployment_data, csv_file_name, json_file_name):
+    """
+    Uses the deployment data collected from OSD and uses Grype to scan the identified images.
+    Additionally, if any deployment uses a previously scanned image, it will use the cached
+    results instead of rescanning.
+    """
+    grype_output_cache = {}
+    with open(csv_file_name, "w") as file:
+        file.write(
+            '"DEPLOYMENT NAME","QUAY TAG","VULNERABILITY ID","DATA SOURCE","VULNERABILITY SEVERITY","PACKAGE NAME","VERSION INSTALLED","FIXED VERSIONS","FIXED STATE"'
+        )
+    for deployment in deployment_data:
+        deployment_name = deployment
+        quay_url = deployment_data.get(deployment)
+        if quay_url in grype_output_cache:
+            logging.info(f"{deployment.upper()} uses a previously scanned image, using cached results.")
+            with open(csv_file_name, "ab") as file:
+                file.write(grype_output_cache[quay_url]["csv"])
+            add_osd_metadata(deployment_name, quay_url, csv_file_name)
+            with open(json_file_name, "ab") as file:
+                file.write(grype_output_cache[quay_url]["json"])
+        else:
+            logging.info(f"Looking at '{quay_url}' for vulnerabilities to grype about.")
+            command = f"grype {quay_url} -o template -t {config.TEMPLATES_DIR}/grype_csv_and_json.tmpl"
+            process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+            output, _ = process.communicate()
+            csv_output = output.split(b"===GRYPE_TEMPLATE_SEPARATOR===")[0]
+            json_output = output.split(b"===GRYPE_TEMPLATE_SEPARATOR===")[1]
+            grype_output_cache[quay_url] = {"csv": csv_output, "json": json_output}
             with open(csv_file_name, "ab") as file:
                 file.write(csv_output)
             add_osd_metadata(deployment_name, quay_url, csv_file_name)
@@ -200,6 +237,12 @@ async def main():
     deployment_data = osd_data_parser(osd_results)
     os.system("./art/syft.sh")
     syft_automation(deployment_data, csv_file_name, json_file_name)
+    remove_blank_lines(csv_file_name)
+    remove_blank_lines(json_file_name)
+    format_json(json_file_name)
+    csv_file_name = f"{config.SYFT_RESULTS_DIR}/{sys.argv[1]}-vuln-scan.csv"
+    json_file_name = f"{config.SYFT_RESULTS_DIR}/{sys.argv[1]}-vuln-scan.json"
+    grype_automation(deployment_data, csv_file_name, json_file_name)
     remove_blank_lines(csv_file_name)
     remove_blank_lines(json_file_name)
     format_json(json_file_name)

@@ -1,6 +1,6 @@
 import os
 
-SYFT_RESULTS_DIR = "syft_results"
+SYFT_RESULTS_DIR = "results"
 WORKSTREAMS_DIR = "workstreams"
 TEMPLATES_DIR = "templates"
 OSD_API_KEY = os.environ['OSD_API_KEY']
