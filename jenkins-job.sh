@@ -28,8 +28,8 @@ echo ""
 # Run Python Syft script
 echo "Setting up Python environment..."
 pipenv install
-echo "Running syft-automation.py..."
-pipenv run python syft-automation.py $WORKSTREAM
+echo "Twiddling the bits via twiddle-the-bits.py..."
+pipenv run python twiddle-the-bits.py $WORKSTREAM
 
 echo ""
 ./art/fin.sh
