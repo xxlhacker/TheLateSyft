@@ -134,7 +134,7 @@ def syft_automation(deployment_data, csv_file_name, json_file_name):
             with open(csv_file_name, "ab") as file:
                 file.write(syft_output_cache[quay_url]["csv"])
             add_osd_metadata(deployment_name, quay_url, csv_file_name)
-            with open(json_file_name, "ab") as file:
+            with open(json_file_name, "a") as file:
                 file.write(syft_output_cache[quay_url]["json"])
         else:
             logging.info(f"Syfting through '{quay_url}'")
@@ -142,12 +142,13 @@ def syft_automation(deployment_data, csv_file_name, json_file_name):
             process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
             output, _ = process.communicate()
             csv_output = output.split(b"===SYFT_TEMPLATE_SEPARATOR===")[0]
-            json_output = clean_json(output.split(b"===SYFT_TEMPLATE_SEPARATOR===")[1])
+            json_output_split = output.split(b"===SYFT_TEMPLATE_SEPARATOR===")[1]
+            json_output = clean_json(json_output_split)
             syft_output_cache[quay_url] = {"csv": csv_output, "json": json_output}
             with open(csv_file_name, "ab") as file:
                 file.write(csv_output)
             add_osd_metadata(deployment_name, quay_url, csv_file_name)
-            with open(json_file_name, "ab") as file:
+            with open(json_file_name, "a") as file:
                 file.write(json_output)
         add_osd_metadata(deployment_name, quay_url, json_file_name)
 
