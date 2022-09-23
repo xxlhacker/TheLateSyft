@@ -242,6 +242,7 @@ async def main():
     format_json(json_file_name)
     csv_file_name = f"{config.SYFT_RESULTS_DIR}/{sys.argv[1]}-vuln-scan.csv"
     json_file_name = f"{config.SYFT_RESULTS_DIR}/{sys.argv[1]}-vuln-scan.json"
+    os.system("./art/grype.sh")
     grype_automation(deployment_data, csv_file_name, json_file_name)
     remove_blank_lines(csv_file_name)
     remove_blank_lines(json_file_name)
