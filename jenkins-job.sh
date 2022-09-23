@@ -21,9 +21,6 @@ echo ""
 echo "-- Scanning Workstream --"
 echo $WORKSTREAM
 echo ""
-echo "-- Output Format --"
-echo $OUTPUT_FORMAT" "$OUTPUT_TEMPLATE
-echo ""
 
 # Run Python Syft script
 echo "Setting up Python environment..."
