@@ -15,6 +15,9 @@ echo ""
 echo "-- Syft Version --"
 syft --version
 echo ""
+echo "-- Grype Version --"
+grype version
+echo ""
 echo "-- Environment --"
 env
 echo ""
