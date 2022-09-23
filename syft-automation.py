@@ -107,10 +107,8 @@ def clean_json(json_like):
         '{"foo":"bar","baz":["blah"]}'
     https://gist.github.com/liftoff/ee7b81659673eca23cd9fc0d8b8e68b7
     """
-    trailing_object_commas_re = re.compile(
-        r'(,)\s*}(?=([^"\\]*(\\.|"([^"\\]*\\.)*[^"\\]*"))*[^"]*$)')
-    trailing_array_commas_re = re.compile(
-        r'(,)\s*\](?=([^"\\]*(\\.|"([^"\\]*\\.)*[^"\\]*"))*[^"]*$)')
+    trailing_object_commas_re = re.compile(r'(,)\s*}(?=([^"\\]*(\\.|"([^"\\]*\\.)*[^"\\]*"))*[^"]*$)')
+    trailing_array_commas_re = re.compile(r'(,)\s*\](?=([^"\\]*(\\.|"([^"\\]*\\.)*[^"\\]*"))*[^"]*$)')
     # Fix objects {} first
     objects_fixed = trailing_object_commas_re.sub("}", json_like)
     # Now fix arrays/lists [] and return the result
@@ -142,7 +140,8 @@ def syft_automation(deployment_data, csv_file_name, json_file_name):
             process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
             output, _ = process.communicate()
             csv_output = output.split(b"===SYFT_TEMPLATE_SEPARATOR===")[0]
-            json_output = clean_json(output.split(b"===SYFT_TEMPLATE_SEPARATOR===")[1])
+            # json_output = clean_json(output.split(b"===SYFT_TEMPLATE_SEPARATOR===")[1])
+            json_output = output.split(b"===SYFT_TEMPLATE_SEPARATOR===")[1]
             syft_output_cache[quay_url] = {"csv": csv_output, "json": json_output}
             with open(csv_file_name, "ab") as file:
                 file.write(csv_output)
@@ -177,6 +176,17 @@ def remove_blank_lines(file_name):
                 file.write(line)
 
 
+def format_json(json_file_name):
+    """
+    Formats the JSON output file to make it vaild JSON
+    """
+    with open(json_file_name, "r") as file:
+        filedata = file.read()
+        clean_filedata = clean_json(f"[\n{filedata}]")
+    with open(json_file_name, "w") as file:
+        file.write(clean_filedata)
+
+
 async def main():
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(message)s", datefmt="%d-%b-%y %H:%M:%S", level=logging.INFO
@@ -192,6 +202,7 @@ async def main():
     syft_automation(deployment_data, csv_file_name, json_file_name)
     remove_blank_lines(csv_file_name)
     remove_blank_lines(json_file_name)
+    format_json(json_file_name)
 
 
 if __name__ == "__main__":

@@ -2,18 +2,16 @@
 "DEPLOYMENT_NAME_PLACEHOLDER","QUAY_TAG_PLACEHOLDER","{{.Name}}","{{.Version}}","{{.Type}}" 
 {{- end}}
 ===SYFT_TEMPLATE_SEPARATOR===
-[
-    {
-        "deployment_name": "DEPLOYMENT_NAME_PLACEHOLDER",
-        "quay_tag": "QUAY_TAG_PLACEHOLDER",
-        "packages": [
-            {{- range .Artifacts}}
-            {
-            "name": "{{.Name}}",
-            "version": "{{.Version}}",
-            "type": "{{.Type}}"
-            },
-            {{- end}}
-        ]
-    },
-]
+{
+    "deployment_name": "DEPLOYMENT_NAME_PLACEHOLDER",
+    "quay_tag": "QUAY_TAG_PLACEHOLDER",
+    "packages": [
+        {{- range .Artifacts}}
+        {
+        "name": "{{.Name}}",
+        "version": "{{.Version}}",
+        "type": "{{.Type}}"
+        },
+        {{- end}}
+    ]
+},
