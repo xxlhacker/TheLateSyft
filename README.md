@@ -36,4 +36,4 @@ the jenkins-job-export.xml
 MRs welcome
 
 ## Authors and acknowledgment
-Dr. Brantley (dr.brantle@redhat.com), Casey Williams (caswilli@redhat.com, Kent Aycoth (kaycoth@redhat.com)
+Dr. Brantley (dr.brantley@redhat.com), Casey Williams (caswilli@redhat.com, Kent Aycoth (kaycoth@redhat.com)
