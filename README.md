@@ -4,7 +4,7 @@ The Late Syft is a new open-source service that transitions existing SBoM(Softwa
 The Late Syft utilizes several tools which consist of Syft(https://github.com/anchore/syft) and Grype(https://github.com/anchore/grype) to help analyze images and their layers for vulnerabilities.
 
 ## Getting started
-The Late Syft project is favored to run in a Jenkins job environment such that you can automate results on an interval, git hooks, and send results to interested parties regularly. However, The Late Syft can be ran standalone by twiddling the bits by invoking the main "twiddle-the-bits.py" Python script.
+The Late Syft project is favored to run in a Jenkins job environment such that you can automate results on an interval, git hooks, and send results to interested parties regularly. However, The Late Syft can be ran standalone by twiddling the bits by invoking the main `twiddle-the-bits.py` Python script.
 
 You will need to install the Syft and Grype packages mentioned above.
 
