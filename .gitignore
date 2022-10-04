@@ -1,5 +1,6 @@
 .dccache
 sbom.csv
+/__pycache__
 /results
 /syft_results
 lint-results.txt

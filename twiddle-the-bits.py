@@ -12,12 +12,13 @@ import re
 
 def make_results_dir():
     if not os.path.isdir(config.SYFT_RESULTS_DIR):
+        logging.info(f'Creating the "{config.SYFT_RESULTS_DIR}" directory')
         os.makedirs(config.SYFT_RESULTS_DIR)
 
 
 def osd_api_key_check():
     """
-    Checks and vaildates OSD API Key that is supplied as an environment variable.
+    Checks and validates OSD API Key that is supplied as an environment variable.
     """
     if config.OSD_API_KEY:
         headers = {"Authorization": f"Bearer {config.OSD_API_KEY}"}
@@ -25,7 +26,7 @@ def osd_api_key_check():
         if r.status_code == 200:
             logging.info("OSD Prod Authentication Successful!")
         else:
-            logging.error('OSD Prod Authentication was unsuccessful, please varify your "OSD API KEY" is vaild.')
+            logging.error('OSD Prod Authentication was unsuccessful, please verify your "OSD API KEY" is valid.')
             quit()
     else:
         logging.error('Job Failed to start. You must supply an "OSD_API_KEY" as environment variable.')
@@ -34,7 +35,7 @@ def osd_api_key_check():
 
 def workstream_json_check():
     """
-    Checks and validates the existance of the workstream json name supplied via command line argument.
+    Checks and validates the existence of the workstream json name supplied via command line argument.
     """
     if len(sys.argv) > 1:
         if os.path.exists(f"{config.WORKSTREAMS_DIR}/{sys.argv[1]}.json"):
@@ -58,7 +59,7 @@ def define_component_list():
 
 async def production_image_lookup(worksteam_json_data):
     """
-    Pulls deployement data from OSD for each component based on the supplied workstream JSON.
+    Pulls deployment data from OSD for each component based on the supplied workstream JSON.
     """
     osd_results = []
     urls = []
@@ -203,7 +204,7 @@ def add_osd_metadata(deployment_name, quay_url, file_name):
 
 def remove_blank_lines(file_name):
     """
-    Looks at the provided output and removes blank lines intoduced via Syft Output.
+    Looks at the provided output and removes blank lines introduced via Syft Output.
     """
     with open(file_name, "r") as file:
         filedata = file.readlines()
@@ -215,7 +216,7 @@ def remove_blank_lines(file_name):
 
 def format_json(json_file_name):
     """
-    Formats the JSON output file to make it vaild JSON
+    Formats the JSON output file to make it valid JSON
     """
     with open(json_file_name, "r") as file:
         filedata = file.read()
@@ -247,11 +248,11 @@ async def main():
     )
     osd_api_key_check()
     workstream_json_check()
+    make_results_dir()
     csv_file_name = f"{config.SYFT_RESULTS_DIR}/{sys.argv[1]}-sbom.csv"
     json_file_name = f"{config.SYFT_RESULTS_DIR}/{sys.argv[1]}-sbom.json"
     create_clean_result_files(csv_file_name, json_file_name)
     worksteam_json_data = define_component_list()
-    make_results_dir()
     osd_results = await production_image_lookup(worksteam_json_data)
     deployment_data = osd_data_parser(osd_results)
     os.system("./art/syft.sh")
