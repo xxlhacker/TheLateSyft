@@ -86,16 +86,16 @@ def osd_data_parser(osd_results):
     """
     deployment_data = {}
     for components in osd_results:
-        if components["kind"] == "Deployment":
+        if components["kind"] in ["Deployment", "DeploymentConfig"]:
             for component in components["spec"]["template"]["spec"]["containers"]:
                 deployment_data[component["name"]] = component["image"]
         elif components["kind"] == "CronJob":
             deployment_data[component["name"]] = components["spec"]["jobTemplate"]["spec"]["template"]["spec"][
                 "containers"
             ][0]["image"]
-        elif components["kind"] == "Status" and components["reason"] == "NotFound":
+        elif components["kind"] == "Status" and components["reason"] in ["NotFound", "Forbidden"]:
             logging.error(
-                f'Deployment {components["details"]["name"].upper()} was not found in OSD. '
+                f'The request for the deployment {components["details"]["name"].upper()} was "{components["reason"]}" in OSD. '
                 "Please check the associated workstream template and verify all OSD URLs are correct."
             )
     return deployment_data
