@@ -90,7 +90,7 @@ def osd_data_parser(osd_results):
             for component in components["spec"]["template"]["spec"]["containers"]:
                 deployment_data[component["name"]] = component["image"]
         elif components["kind"] == "CronJob":
-            deployment_data[component["name"]] = components["spec"]["jobTemplate"]["spec"]["template"]["spec"][
+            deployment_data[components["metadata"]["name"]] = components["spec"]["jobTemplate"]["spec"]["template"]["spec"][
                 "containers"
             ][0]["image"]
         elif components["kind"] == "Status" and components["reason"] in ["NotFound", "Forbidden"]:
@@ -129,14 +129,14 @@ def syft_automation(deployment_data, csv_file_name, json_file_name):
         deployment_name = deployment
         quay_url = deployment_data.get(deployment)
         if quay_url in syft_output_cache:
-            logging.info(f"{deployment.upper()} uses a previously scanned image, using cached results.")
+            logging.info(f"{deployment.upper()} uses a previously scanned image '{quay_url}', using cached results.")
             with open(csv_file_name, "ab") as file:
                 file.write(syft_output_cache[quay_url]["csv"])
             add_osd_metadata(deployment_name, quay_url, csv_file_name)
             with open(json_file_name, "ab") as file:
                 file.write(syft_output_cache[quay_url]["json"])
         else:
-            logging.info(f"Syfting through '{quay_url}'")
+            logging.info(f"Syfting through [{deployment.upper()} - {quay_url}]")
             command = f"syft {quay_url} -o template -t {config.TEMPLATES_DIR}/syft_csv_and_json.tmpl"
             process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
             output, _ = process.communicate()
@@ -166,14 +166,14 @@ def grype_automation(deployment_data, csv_file_name, json_file_name):
         deployment_name = deployment
         quay_url = deployment_data.get(deployment)
         if quay_url in grype_output_cache:
-            logging.info(f"{deployment.upper()} uses a previously scanned image, using cached results.")
+            logging.info(f"{deployment.upper()} uses a previously scanned image '{quay_url}', using cached results.")
             with open(csv_file_name, "ab") as file:
                 file.write(grype_output_cache[quay_url]["csv"])
             add_osd_metadata(deployment_name, quay_url, csv_file_name)
             with open(json_file_name, "ab") as file:
                 file.write(grype_output_cache[quay_url]["json"])
         else:
-            logging.info(f"Looking at '{quay_url}' for vulnerabilities to grype about.")
+            logging.info(f"Looking at [{deployment.upper()} - {quay_url}] for vulnerabilities to grype about.")
             command = f"grype {quay_url} -o template -t {config.TEMPLATES_DIR}/grype_csv_and_json.tmpl"
             process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
             output, _ = process.communicate()
