@@ -6,7 +6,7 @@
             "sources-satellite-operations": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/sources-prod/deployments/sources-satellite-operations",
             "sources-api-availability-status-listener": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/sources-prod/deployments/sources-api-availability-status-listener",
             "sources-api-background-worker": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/sources-prod/deployments/sources-api-background-worker",
-            "sources-monitor-go": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/batch/v1beta1/namespaces/sources-prod/cronjobs/sources-monitor-go-available-sources"
+            "sources-monitor-go": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/batch/v1/namespaces/sources-prod/cronjobs/sources-monitor-go-available-sources"
         }
     ]
 }

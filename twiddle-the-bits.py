@@ -95,7 +95,7 @@ def osd_data_parser(osd_results):
             ][0]["image"]
         elif components["kind"] == "Status" and components["reason"] in ["NotFound", "Forbidden"]:
             logging.error(
-                f'The request for the deployment {components["details"]["name"].upper()} was "{components["reason"]}" in OSD. '
+                f'The request for the deployment {components["details"]} was "{components["reason"]}" in OSD. '
                 "Please check the associated workstream template and verify all OSD URLs are correct."
             )
     return deployment_data

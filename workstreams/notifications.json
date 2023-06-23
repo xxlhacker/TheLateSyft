@@ -2,7 +2,8 @@
     "components": [
         {
             "notifications-gw": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/notifications-prod/deployments/notifications-gw-service",
-            "notifications-backend": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/notifications-prod/deployments/notifications-backend-service"
+            "notifications-backend": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/notifications-prod/deployments/notifications-backend-service",
+            "notifications-engine-service": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/notifications-prod/deployments/notifications-engine-service"
         }
     ]
 }
