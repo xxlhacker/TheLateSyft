@@ -3,9 +3,7 @@
         {
             "apicast-test-services": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/apicast-test-services-prod/deployments/apicast-test-services",
             "entitlements-api-go": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/entitlements-prod/deployments/entitlements-api-go",
-            "gateway": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/3scale-prod/deployments/apicast",
-            "platform-logger": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/platform-logging-prod/deployments/platform-logger",
-            "platform-logstash": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/platform-logging-prod/deployments/platform-logstash",
+            "gateway": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/3scale-prod/deployments/gateway",
             "rbac-service": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/rbac-prod/deployments/rbac-service",
             "rbac-scheduler-service": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/rbac-prod/deployments/rbac-scheduler-service",
             "rbac-worker-service": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/rbac-prod/deployments/rbac-worker-service",
@@ -15,14 +13,13 @@
             "turnpike-web": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/turnpike-prod/deployments/web",
             "turnpike-nginx": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/turnpike-prod/deployments/nginx",
             "turnpike-prometheus": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/turnpike-prod/deployments/prometheus-nginx",
-            "haberdasher": "",
             "cloudwatch-aggergator": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps.openshift.io/v1/namespaces/3scale-prod/deploymentconfigs/cloudwatch-aggregator",
             "sources-api-svc": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/sources-prod/deployments/sources-api-svc",
             "sources-superkey-worker-svc": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/sources-prod/deployments/sources-superkey-worker-svc",
             "sources-satellite-operations": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/sources-prod/deployments/sources-satellite-operations",
             "sources-api-availability-status-listener": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/sources-prod/deployments/sources-api-availability-status-listener",
             "sources-api-background-worker": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/sources-prod/deployments/sources-api-background-worker",
-            "sources-monitor-go": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/batch/v1beta1/namespaces/sources-prod/cronjobs/sources-monitor-go-available-sources"
+            "sources-monitor-go": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/batch/v1/namespaces/sources-prod/cronjobs/sources-monitor-go-available-sources"
         }
     ]
 }
