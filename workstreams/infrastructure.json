@@ -7,7 +7,6 @@
             "rbac-service": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/rbac-prod/deployments/rbac-service",
             "rbac-scheduler-service": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/rbac-prod/deployments/rbac-scheduler-service",
             "rbac-worker-service": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/rbac-prod/deployments/rbac-worker-service",
-            "gabi-rbac": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/rbac-prod/deployments/gabi-rbac",
             "uhc-auth-proxy": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/uhc-auth-proxy-prod/deployments/uhc-auth-proxy",
             "backoffice-proxy": "",
             "turnpike-web": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/turnpike-prod/deployments/web",
