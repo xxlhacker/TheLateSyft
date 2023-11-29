@@ -4,11 +4,20 @@
             "insights-ingress": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/ingress-prod/deployments/ingress-service",
             "insights-storage-broker": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/ingress-prod/deployments/storage-broker-processor",
             "recepetor-gateway": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/receptor-prod/deployments/receptor-gateway",
+            "cloud-connector-api" : "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/cloud-connector-prod/deployments/cloud-connector-api",
+            "cloud-connector-kafka-message-consumer" : "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/",
+            "cloud-connector-mqtt-message-consumer" : "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/cloud-connector-prod/deployments/cloud-connector-kafka-message-consumer",
+            "export-service-go": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/export-service-prod/deployments/export-service-service",
+            "payload-tracker-api": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/payload-tracker-prod/deployments/payload-tracker-api",
+            "payload-tracker-consumer": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/payload-tracker-prod/deployments/payload-tracker-consumer",
+            "payload-tracker-frontend": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/payload-tracker-prod/deployments/payload-tracker-frontend",
             "playbook-dispatcher-api": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/playbook-dispatcher-prod/deployments/playbook-dispatcher-api",
             "plabook-dispatcher-connect-connect": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/playbook-dispatcher-prod/deployments/playbook-dispatcher-connect-connect",
             "playbook-dispatcher-event-consumer": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/playbook-dispatcher-prod/deployments/playbook-dispatcher-event-consumer",
             "playbook-dispatcher-response-consumer": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/playbook-dispatcher-prod/deployments/playbook-dispatcher-response-consumer",
-            "playbook-dispatcher-validator": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/playbook-dispatcher-prod/deployments/playbook-dispatcher-validator"
+            "playbook-dispatcher-validator": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/playbook-dispatcher-prod/deployments/playbook-dispatcher-validator",
+            "virtual-assistant-actions": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/virtual-assistant-prod/deployments/virtual-assistant-actions",
+            "virtual-assistant-api": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/virtual-assistant-prod/deployments/virtual-assistant-api"
         }
     ]
 }

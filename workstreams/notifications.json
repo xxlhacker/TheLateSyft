@@ -2,8 +2,13 @@
     "components": [
         {
             "notifications-gw": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/notifications-prod/deployments/notifications-gw-service",
-            "notifications-backend": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/notifications-prod/deployments/notifications-backend-service",
-            "notifications-engine-service": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/notifications-prod/deployments/notifications-engine-service"
+            "notifications-backend-service": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/notifications-prod/deployments/notifications-backend-service",
+            "notifications-engine-service": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/notifications-prod/deployments/notifications-engine-service",
+            "notifications-connector-google-chat": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/notifications-prod/deployments/notifications-connector-google-chat-service", 
+            "notifications-connector-microsoft-teams": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/notifications-prod/deployments/notifications-connector-microsoft-teams-service",
+            "notifications-connector-splunk": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/notifications-prod/deployments/notifications-connector-splunk-service",
+            "notifications-connector-slack": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/notifications-prod/deployments/notifications-connector-slack-service",
+            "notifications-connector-servicenow": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/notifications-prod/deployments/notifications-connector-servicenow-service"
         }
     ]
 }

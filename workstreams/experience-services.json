@@ -1,0 +1,11 @@
+{
+    "components": [
+        {
+            "chrome-service-api": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/chrome-service-prod/deployments/chrome-service-api",
+            "chrome-frontend": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/frontends/deployments/chrome-frontend",
+            "pdf-generator-api": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/pdf-generator-prod/deployments/pdf-generator-api",
+            "crc-pdf-generator-api": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/crc-pdf-generator-prod/deployments/crc-pdf-generator-api",
+            "quickstarts": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/quickstarts-prod/deployments/quickstarts-service"
+        }
+    ]
+}
