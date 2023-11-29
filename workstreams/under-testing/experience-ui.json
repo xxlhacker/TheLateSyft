@@ -1,0 +1,13 @@
+{
+    "components": [
+        {
+            "landing-frontend": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/frontends/deployments/landing-frontend",
+            "notifications-frontend": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/frontends/deployments/notifications-frontend",
+            "rbac-frontend": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/frontends/deployments/rbac-frontend",
+            "sources-frontend": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/frontends/deployments/sources-frontend",
+            "learning-resources-frontend": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/frontends/deployments/learning-resources-frontend",
+            "api-docs-frontend": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/frontends/deployments/api-docs-frontend",
+            "payload-tracker-frontend": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/payload-tracker-prod/deployments/payload-tracker-frontend"
+        }
+    ]
+}

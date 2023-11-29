@@ -2,7 +2,8 @@
     "components": [
         {
             "clowder": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/clowder-system/deployments/clowder-controller-manager",
-            "clowder-plugin": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/clowder-system/deployments/clowder-plugin"
+            "clowder-plugin": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/clowder-system/deployments/clowder-plugin",
+            "platform-kafka-connect": "https://api.crcp01ue1.o9m8.p1.openshiftapps.com:6443/apis/apps/v1/namespaces/platform-mq-prod/deployments/platform-kafka-connect-connect"
         }
     ]
 }
