@@ -1,8 +1,9 @@
 {{- range .Matches}}
-"DEPLOYMENT_NAME_PLACEHOLDER","QUAY_TAG_PLACEHOLDER","{{.Vulnerability.ID}}","{{.Vulnerability.DataSource}}","{{.Vulnerability.Severity}}","{{.Artifact.Name}}","{{.Artifact.Version}}","{{.Vulnerability.Fix.Versions}}","{{.Vulnerability.Fix.State}}"
+"WORKSTREAM_PLACEHOLDER","DEPLOYMENT_NAME_PLACEHOLDER","QUAY_TAG_PLACEHOLDER","{{.Vulnerability.ID}}","{{.Vulnerability.DataSource}}","{{.Vulnerability.Severity}}","{{.Artifact.Name}}","{{.Artifact.Version}}","{{.Vulnerability.Fix.Versions}}","{{.Vulnerability.Fix.State}}"
 {{- end}}
 ===GRYPE_TEMPLATE_SEPARATOR===
 {
+    "workstream": "WORKSTREAM_PLACEHOLDER",
     "deployment_name": "DEPLOYMENT_NAME_PLACEHOLDER",
     "quay_tag": "QUAY_TAG_PLACEHOLDER",
     "vulnerabilities": [
