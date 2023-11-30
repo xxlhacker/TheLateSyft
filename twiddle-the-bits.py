@@ -124,7 +124,7 @@ def syft_automation(deployment_data, csv_file_name, json_file_name):
     """
     syft_output_cache = {}
     with open(csv_file_name, "w") as file:
-        file.write('"DEPLOYMENT NAME","QUAY TAG","PACKAGE NAME","VERSION INSTALLED","DEPENDENCY TYPE"')
+        file.write('"WORKSTREAM","DEPLOYMENT NAME","QUAY TAG","PACKAGE NAME","VERSION INSTALLED","DEPENDENCY TYPE"')
     for deployment in deployment_data:
         deployment_name = deployment
         quay_url = deployment_data.get(deployment)
@@ -160,7 +160,7 @@ def grype_automation(deployment_data, csv_file_name, json_file_name):
     grype_output_cache = {}
     with open(csv_file_name, "w") as file:
         file.write(
-            '"DEPLOYMENT NAME","QUAY TAG","VULNERABILITY ID","DATA SOURCE","VULNERABILITY SEVERITY","PACKAGE NAME","VERSION INSTALLED","FIXED VERSIONS","FIXED STATE"'
+            '"WORKSTREAM","DEPLOYMENT NAME","QUAY TAG","VULNERABILITY ID","DATA SOURCE","VULNERABILITY SEVERITY","PACKAGE NAME","VERSION INSTALLED","FIXED VERSIONS","FIXED STATE"'
         )
     for deployment in deployment_data:
         deployment_name = deployment
@@ -196,6 +196,7 @@ def add_osd_metadata(deployment_name, quay_url, file_name):
     """
     with open(file_name, "r") as file:
         filedata = file.read()
+    filedata = filedata.replace("WORKSTREAM_PLACEHOLDER", sys.argv[1])
     filedata = filedata.replace("DEPLOYMENT_NAME_PLACEHOLDER", deployment_name)
     filedata = filedata.replace("QUAY_TAG_PLACEHOLDER", quay_url)
     with open(file_name, "w") as file:
